@@ -1,0 +1,12 @@
+{
+	"scripts": {
+		"dev": "npm run build -- --sourcemap=inline --watch",
+		"build": "esbuild js/*.js --minify --format=esm --bundle --outdir=src/jupyter_anywidget_webllm/static --loader:.html=text"
+	},
+	"dependencies": {
+		"@mlc-ai/web-llm": "^0.2.77"
+	},
+	"devDependencies": {
+		"esbuild": "^0.24.0"
+	}
+}

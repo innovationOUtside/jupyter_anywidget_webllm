@@ -41,7 +41,7 @@ function render({ model, el }) {
     option.textContent = modelId;
     modelSelection.appendChild(option);
   });
-  
+
   outputDiv.innerHTML = "<div>waiting</div>";
   if (!engine) {
     outputDiv.innerHTML = "<div>getting ready</div>";
@@ -62,20 +62,30 @@ function render({ model, el }) {
 
     model.on("change:doc_content", () => {
       const input_raw = model.get("doc_content");
-      if (input_raw=="") return
+      if (input_raw == "") return;
 
-      const input_format = model.get("input_format");
       const output_template = model.get("output_template");
+      let response_format = {};
+      if (output_template) {
+        try {
+        const schema = JSON.stringify(JSON.parse(output_template));
+        response_format = { type: "json_object", schema };
+        } catch { alert("Template does not validate") }
+      }
+      const temperature = model.get("temperature");
       const request = {
         stream: true,
-        stream_options: { include_usage: true },
+        stream_options: { include_usage: false },
         messages: [{ role: "user", content: input_raw }],
-        max_tokens: 512,
-        //response_format,
+        max_tokens: model.get("params").max_tokens ?? 512,
+        response_format,
+        temperature: model.get("params").temperature ?? 0.5,
+        top_p: model.get("params").top_p ?? 0.5,
+        frequency_penalty: model.get("params").frequency_penalty ?? 0.5,
+        presence_penalty: model.get("params").presence_penalty ?? 0.3,
       };
       model.set("response", {
         status: "working on it...",
-        input_format: input_format,
         output_template: output_template,
         input_raw: input_raw,
       });
@@ -98,6 +108,13 @@ function render({ model, el }) {
                       model.set("response", {
                         status: "completed",
                         output_raw: finalMessage,
+                        max_tokens: model.get("params").max_tokens ?? 512,
+                        temperature: model.get("params").temperature ?? 0.5,
+                        top_p: model.get("params").top_p ?? 0.5,
+                        frequency_penalty:
+                          model.get("params").frequency_penalty ?? 0.5,
+                        presence_penalty:
+                          model.get("params").presence_penalty ?? 0.3,
                       });
                       model.save_changes();
                       resolve(finalMessage);

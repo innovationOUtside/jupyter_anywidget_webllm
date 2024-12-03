@@ -38,10 +38,10 @@ class webllmWidget(anywidget.AnyWidget):
     headless = traitlets.Bool(False).tag(sync=True)
     doc_content = traitlets.Unicode("").tag(sync=True)
     output_raw = traitlets.Unicode("").tag(sync=True)
-    input_format = traitlets.Unicode("").tag(sync=True)
     output_template= traitlets.Unicode("").tag(sync=True)
     about = traitlets.Dict().tag(sync=True)
     response = traitlets.Dict().tag(sync=True)
+    params = traitlets.Dict().tag(sync=True)
 
     def __init__(self, headless=False, **kwargs):
         super().__init__(**kwargs)
@@ -86,34 +86,29 @@ class webllmWidget(anywidget.AnyWidget):
             self.response = {"status": "processing"}
             self.doc_content = value
 
-    def set_input_format(self, value):
-        self.input_format = value
-
     def set_output_template(self, value):
         self.output_template = value
 
-    def base_convert(self, input_text, input_format="markdown", output_template="", force=False):
-        self.set_input_format(input_format)
+    def base_convert(self, input_text, output_template="", force=False, params=None):
         self.set_output_template(output_template)
+        self.params = params if params else {}
         self.set_doc_content(input_text, force=force)
 
     def convert(
-        self, input_text, input_format="markdown", output_template="", timeout=None, force=False
+        self, input_text, output_template="", timeout=None, force=False, params=None
     ):
-        self.base_convert(input_text, input_format, output_template, force=force)
+        self.base_convert(input_text, output_template, force=force, params=params)
         self.blocking_reply(timeout)
         return self.output_raw
 
     def convert_from_file(
-        self, path, input_format=None, output_template="", timeout=None
+        self, path, output_template="", timeout=None
     ):
         if path.startswith("http"):
             # Download the content from the URL
             response = requests.get(path)
             if response.status_code == 200:
                 input_text = response.text
-                # Attempt to extract file type from URL, if possible
-                filetype = path.split(".")[-1] if "." in path else "unknown"
             else:
                 raise Exception(
                     f"Failed to fetch the URL. Status code: {response.status_code}"
@@ -124,19 +119,10 @@ class webllmWidget(anywidget.AnyWidget):
             if file_path.exists() and file_path.is_file():
                 # Read the content of the file
                 input_text = file_path.read_text()
-                # Get the file type (suffix)
-                filetype = file_path.suffix
             else:
                 raise FileNotFoundError(f"The file '{path}' does not exist.")
 
-        if not input_format:
-            # Clean the filetype
-            filetype = filetype.lstrip(".")
-            # Repair
-            repair_map = {"html=": "html", "md": "markdown"}
-            input_format = repair_map.get(filetype, filetype)
-
-        return self.convert(input_text, input_format, output_template, timeout)
+        return self.convert(input_text, output_template, timeout)
 
 
 def webllm_headless():

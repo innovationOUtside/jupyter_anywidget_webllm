@@ -30,7 +30,6 @@ class WebllmAnywidgetMagic(Magics):
         elif q:
             # Get the actual widget
             w = self.widget
-            w.set_input_format(args.input_format)
             w.set_output_templatet(args.output_template)
             w.set_doc_content(q)
             autorespond = bool(args.timeout or args.embed)
@@ -66,13 +65,6 @@ class WebllmAnywidgetMagic(Magics):
         type=str,
         default="html",
         help="output template (default: '')",
-    )
-    @argument(
-        "-i",
-        "--input_format",
-        type=str,
-        default="markdown",
-        help="input format (default: markdown)",
     )
     def webllm_magic(self, line, cell):
         args = parse_argstring(self.webllm_magic, line)

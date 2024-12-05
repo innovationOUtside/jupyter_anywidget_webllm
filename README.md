@@ -29,19 +29,26 @@ w.response
 > {'status': 'completed', 'output_raw': 'OUTPUT'}
 ```
 
+The `.convert()` and `.base_convert()` calls also accept a `timeout=SECONDS` parameter (seconds); to disable the timeout, use `timeout=None`.
+
+The `force=True` parameter can be used to force the model to rerun if the prompt has not been changed (otherwise the model only runs if the prompt has changed).
+
 ## Structured outputs
 
 We can use `web-llm`'s in-bult XGrammar support to generated structured outputs by passing a json-schema template via the `output_template=` parameter  (though this seems a bit unreliable to me, and seems to be prompt sensitive?)
 
 ```json
 output_template="""{
-    "title": "A story",
-    "type": "object",
-    "properties": {
-      "tale": {
-        "type": "string",
-        "description": "The story"
-      }}}"""
+  "title": "A story",
+  "type": "object",
+  "properties": {
+    "tale": {
+      "type": "string",
+      "description": "The story"
+    }
+  }
+}
+"""
 ```
 
 ```python
@@ -59,7 +66,7 @@ json.loads(raw_response)
 
 ## Setting Model Parameters
 
-We can set model paramters by passing in a parameters dictionary via the `parameters=` parameter:
+We can set model parameters by passing in a parameters dictionary via the `parameters=` parameter:
 
 ```python
 params={"max_tokens":4096,

@@ -4,6 +4,8 @@ Example Jupyter/VS Code [`anywidget`](https://anywidget.dev/) that will sideload
 
 *`web-llm` handling code originally cribbed from [`Vaibhavs10/github-issue-generator-webgpudemo`](https://github.com/Vaibhavs10/github-issue-generator-webgpu).*
 
+Related blog post: [SmolLM2 Jupyter anywidget with optional structured output](https://blog.ouseful.info/2024/12/05/smollm2-jupyter-anywidget-with-optional-structured-output-almost/)
+
 Install as: `pip install jupyter_anywidget_webllm`
 
 For example:

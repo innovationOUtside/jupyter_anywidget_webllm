@@ -29,7 +29,47 @@ w.response
 > {'status': 'completed', 'output_raw': 'OUTPUT'}
 ```
 
-TO DO: ALLOW a json outpur template from a string or file: Use `w.convert_from_file(path, output_template="", timeout=3)` etc. to load from a local file path or a URL.
+## Structured outputs
+
+We can use `web-llm`'s in-bult XGrammar support to generated structured outputs by passing a json-schema template via the `output_template=` parameter  (though this seems a bit unreliable to me, and seems to be prompt sensitive?)
+
+```json
+output_template="""{
+    "title": "A story",
+    "type": "object",
+    "properties": {
+      "tale": {
+        "type": "string",
+        "description": "The story"
+      }}}"""
+```
+
+```python
+import json
+prompt=""""
+Using the provided template output format,
+write me a story in 50 words that starts:
+It was night
+""""
+
+raw_response = w.convert(prompt, output_template=output_template, force=True)
+
+json.loads(raw_response)
+```
+
+## Setting Model Parameters
+
+We can set model paramters by passing in a parameters dictionary via the `parameters=` parameter:
+
+```python
+params={"max_tokens":4096,
+        "temperature":0,
+        "top_p": 0.1, 
+        "frequency_penalty": 0.0,
+        "presence_penalty": 0.0}
+
+w.convert("write a poem in 8 lines", params=params)
+```
 
 ## Installation
 

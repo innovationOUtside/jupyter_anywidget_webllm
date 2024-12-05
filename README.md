@@ -2,6 +2,8 @@
 
 Example Jupyter/VS Code [`anywidget`](https://anywidget.dev/) that will sideload a `web-llm` model into the browser and run prompts against it.
 
+*`web-llm` handling code originally cribbed from [`Vaibhavs10/github-issue-generator-webgpudemo`](https://github.com/Vaibhavs10/github-issue-generator-webgpu).*
+
 Install as: `pip install jupyter_anywidget_webllm`
 
 For example:

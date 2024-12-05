@@ -62,16 +62,30 @@ function render({ model, el }) {
 
     model.on("change:doc_content", () => {
       const input_raw = model.get("doc_content");
-      if (input_raw == "") return;
-
+      if (input_raw == "") {
+        model.set("response", {
+          status: "aborted",
+        });
+        model.save_changes();
+        return;
+      }
+      let valid_template = true;
       const output_template = model.get("output_template");
       let response_format = {};
       if (output_template) {
         try {
-        const schema = JSON.stringify(JSON.parse(output_template));
-        response_format = { type: "json_object", schema };
-        } catch { alert("Template does not validate") }
+          const schema = JSON.stringify(JSON.parse(output_template));
+          response_format = { type: "json_object", schema };
+        } catch {
+          alert("Template does not validate");
+          model.set("response", {
+            status: "aborted",
+          });
+          model.save_changes();
+          return;
+        }
       }
+
       const temperature = model.get("temperature");
       const request = {
         stream: true,

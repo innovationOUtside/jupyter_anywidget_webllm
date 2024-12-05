@@ -1,6 +1,8 @@
 # jupyter_anywidget_webllm
 
-Example Jupyter anywidget that will sideload a `web-llm` model into the browser and run prompts against it.
+Example Jupyter/VS Code [`anywidget`](https://anywidget.dev/) that will sideload a `web-llm` model into the browser and run prompts against it.
+
+Install as: `pip install jupyter_anywidget_webllm`
 
 For example:
 

@@ -52,7 +52,7 @@ class webllmWidget(anywidget.AnyWidget):
         start_time = time.time()
         try:
             with ui_events() as ui_poll:
-                while self.response[conditions[0]] != conditions[1]:
+                while (self.response[conditions[0]] != conditions[1]) & (self.response["status"]!="aborted"):
                     ui_poll(10)
                     if timeout and ((time.time() - start_time) > timeout):
                         raise TimeoutError(

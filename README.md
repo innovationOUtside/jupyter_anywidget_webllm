@@ -33,6 +33,16 @@ The `.convert()` and `.base_convert()` calls also accept a `timeout=SECONDS` par
 
 The `force=True` parameter can be used to force the model to rerun if the prompt has not been changed (otherwise the model only runs if the prompt has changed).
 
+## Why is this interesting?
+
+More and more tools are being published as wasm wrappers, and the anywidget model provides a simple way of bundling those in a python api wrapper we can call from notebooks. The main advantages are:
+
+1) runs in browser, so no installation required;
+
+2) runs in browser, so all you need to serve the application is a simple static file serving webserver;
+
+3) also runs (in non-blocking) way in JupyterLite, which can be saved as a progressive web app and then used offline, and provides a way of publishing a Jupyter environment without the need for anything other than a simple static file serving webserver.
+
 ## Structured outputs
 
 We can use `web-llm`'s in-bult XGrammar support to generated structured outputs by passing a json-schema template via the `output_template=` parameter  (though this seems a bit unreliable to me, and seems to be prompt sensitive?)

@@ -24,7 +24,6 @@ w.ready()
 output = w.convert("Write me a poem")
 output
 
-
 #Non-blocking
 w.base_convert("Write me a story")
 # When it's ready, collect from:
@@ -36,6 +35,8 @@ w.response
 The `.convert()` and `.base_convert()` calls also accept a `timeout=SECONDS` parameter (seconds); to disable the timeout, use `timeout=None`.
 
 The `force=True` parameter can be used to force the model to rerun if the prompt has not been changed (otherwise the model only runs if the prompt has changed).
+
+Display avalailable models with `w.models`. *TO DO - allow user to reset model and then load/initialise it.*
 
 ## Why is this interesting?
 

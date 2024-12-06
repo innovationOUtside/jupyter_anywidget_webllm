@@ -29,6 +29,9 @@ function render({ model, el }) {
   const promptTextarea = el.querySelector('textarea[name="webllm-prompt"]');
   const outputDiv = el.querySelector('div[title="webllm-output"]');
 
+  model.set("models", prebuiltAppConfig.model_list);
+  model.save_changes();
+
   const availableModels = prebuiltAppConfig.model_list
     .filter((m) => m.model_id.startsWith("SmolLM2"))
     .map((m) => m.model_id);

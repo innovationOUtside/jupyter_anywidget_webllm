@@ -40,6 +40,7 @@ class webllmWidget(anywidget.AnyWidget):
     output_raw = traitlets.Unicode("").tag(sync=True)
     output_template= traitlets.Unicode("").tag(sync=True)
     about = traitlets.Dict().tag(sync=True)
+    models = traitlets.List().tag(sync=True)
     response = traitlets.Dict().tag(sync=True)
     params = traitlets.Dict().tag(sync=True)
 

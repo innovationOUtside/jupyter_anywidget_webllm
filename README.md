@@ -106,3 +106,8 @@ uv add jupyter_anywidget_webllm
 ```
 
 Open `example.ipynb` in JupyterLab, VS Code, for a demo...
+
+
+# Other (predominantly, ouseful) sideloading wasm anywidgets
+
+See the GitHup topc tag: [`jupyter-wasm-anywidget-extension`](https://github.com/topics/jupyter-wasm-anywidget-extension)
